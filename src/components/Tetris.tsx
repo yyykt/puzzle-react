@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 import { createStage } from 'gameHelper';
 import bgImage from 'img/bg.jpg';
+
+import usePlayer from 'hooks/usePlayer';
+import useStage from 'hooks/useStage';
 
 import Stage from './Stage';
 import Display from './Display';
@@ -29,16 +32,32 @@ const Wrapper = styled.div`
   }
 `;
 
-const Tetris = () => {
+const Tetris: FC = () => {
+  const [dropTime, setDropTime] = useState(null);
+  const [gameOver, setGameOver] = useState(false);
+
+  const [player] = usePlayer();
+  const [stage, setStage] = useStage();
+
+  const movePlayer = (dir: 'left' | 'right') => {};
+
+  const drop = () => {};
+
+  const dropPlayer = () => {};
+
   return (
     <Wrapper>
       <Stage stage={createStage()} />
       <aside>
-        <div>
-          <Display text="Score" />
-          <Display text="Rows" />
-          <Display text="Level" />
-        </div>
+        {gameOver ? (
+          <Display text="Game Over" />
+        ) : (
+          <div>
+            <Display text="Score" />
+            <Display text="Rows" />
+            <Display text="Level" />
+          </div>
+        )}
         <StartButton />
       </aside>
     </Wrapper>

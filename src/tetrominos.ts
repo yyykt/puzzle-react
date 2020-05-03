@@ -189,7 +189,7 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   },
 };
 
-const randomTeromino = (): MinoType => {
+export const randomTeromino = (): MinoType => {
   const tetrominos: MinoType[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
   const randTetromino =
     tetrominos[Math.floor(Math.random() * tetrominos.length)];

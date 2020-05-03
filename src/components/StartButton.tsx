@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.button`
+interface Props {
+  callback?: any;
+}
+const StartButton: FC<Props> = ({ callback }) => (
+  <Button onClick={callback}>Start Game</Button>
+);
+
+const Button = styled.button`
   box-sizing: border-box;
   background: #fff;
   min-height: 40px;
   width: 100%;
   cursor: pointer;
 `;
-
-interface Props {
-  callback?: any;
-}
-const StartButton: FC<Props> = ({ callback }) => (
-  <Wrapper onClick={callback}>Start Game</Wrapper>
-);
 
 export default StartButton;

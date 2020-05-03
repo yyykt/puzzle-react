@@ -8,6 +8,14 @@ interface Props {
   stage: CellData[][];
 }
 
+const Stage: FC<Props> = ({ stage }) => (
+  <Wrapper width={stage[0].length} height={stage.length}>
+    {stage.map((row) =>
+      row.map(({ type, x }) => <Cell type="block" mino="T" />)
+    )}
+  </Wrapper>
+);
+
 const Wrapper = styled.div<{ width: number; height: number }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.width}, 1fr);
@@ -16,13 +24,5 @@ const Wrapper = styled.div<{ width: number; height: number }>`
   width: 100%;
   background: #333;
 `;
-
-const Stage: FC<Props> = ({ stage }) => (
-  <Wrapper width={stage[0].length} height={stage.length}>
-    {stage.map((row) =>
-      row.map(({ type, x }) => <Cell type="block" mino="T" />)
-    )}
-  </Wrapper>
-);
 
 export default Stage;

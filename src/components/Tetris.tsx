@@ -11,27 +11,6 @@ import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: url(${bgImage});
-  background-size: cover;
-  overflow: hidden;
-
-  display: flex;
-  align-items: flex-start;
-  padding: 40px;
-  margin: 0 auto;
-  max-width: 900px;
-
-  aside {
-    width: 100%;
-    max-width: 200px;
-    display: block;
-    padding: 0 20px;
-  }
-`;
-
 const Tetris: FC = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
@@ -63,5 +42,26 @@ const Tetris: FC = () => {
     </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: url(${bgImage});
+  background-size: cover;
+  overflow: hidden;
+
+  display: flex;
+  align-items: flex-start;
+  padding: 40px;
+  margin: 0 auto;
+  max-width: 900px;
+
+  aside {
+    width: 100%;
+    max-width: 200px;
+    display: block;
+    padding: 0 20px;
+  }
+`;
 
 export default Tetris;

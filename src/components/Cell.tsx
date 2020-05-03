@@ -8,6 +8,12 @@ interface Props {
   mino?: MinoType;
 }
 
+const Cell: FC<Props> = ({ type = 'empty', mino }) => {
+  const colorEmpty: string = 'rgba(0, 0, 0, 0.0)';
+  const color = mino ? TETROMINO[mino].color : colorEmpty;
+  return <Wrapper type={type} color={color} />;
+};
+
 const Wrapper = styled.div<{ type: CellType; color: string }>`
   &::before {
     display: block;
@@ -35,10 +41,4 @@ const Wrapper = styled.div<{ type: CellType; color: string }>`
     return '';
   }};
 `;
-
-const Cell: FC<Props> = ({ type = 'empty', mino }) => {
-  const colorEmpty: string = 'rgba(0, 0, 0, 0.0)';
-  const color = mino ? TETROMINO[mino].color : colorEmpty;
-  return <Wrapper type={type} color={color} />;
-};
 export default Cell;

@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+const Display: FC<Props> = ({ gameOver, text }) => <Wrapper>{text}</Wrapper>;
+
 const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -17,7 +19,5 @@ interface Props {
   gameOver?: boolean;
   text: string;
 }
-
-const Display: FC<Props> = ({ gameOver, text }) => <Wrapper>{text}</Wrapper>;
 
 export default Display;

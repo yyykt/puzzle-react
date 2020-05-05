@@ -1,44 +1,58 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import styled, { css } from 'styled-components';
-import TETROMINO, { MinoType } from 'tetrominos';
+import MINOINFO, { MinoType } from 'tetrominos';
 
 type CellType = 'empty' | 'block' | 'ghost';
-interface Props {
-  type?: CellType;
-  mino?: MinoType;
+export interface Props {
+  type: 'empty' | 'activeMino' | 'fixedBlock' | 'ghost';
+  minoType?: MinoType;
+  cutoff?: boolean;
 }
 
-const Cell: FC<Props> = ({ type = 'empty', mino }) => {
-  const colorEmpty: string = 'rgba(0, 0, 0, 0.0)';
-  const color = mino ? TETROMINO[mino].color : colorEmpty;
-  return <Wrapper type={type} color={color} />;
+// TODO rename
+const Cell: FC<Props> = (props) => {
+  return <Wrapper {...props} />;
 };
 
-const Wrapper = styled.div<{ type: CellType; color: string }>`
+const Wrapper = styled.div<Props>`
   &::before {
     display: block;
-    padding-top: 100%;
+    padding-top: ${(props) => (props.cutoff ? '30%' : '100%')};
     content: '';
   }
 
   ${(props) => {
-    if (props.type === 'block') {
+    if (
+      (props.type === 'fixedBlock' || props.type === 'activeMino') &&
+      props.minoType
+    ) {
+      const { color } = MINOINFO[props.minoType];
       return css`
-        background: rgba(${props.color}, 0.8);
+        background: rgba(${color}, 0.7);
+        border: 6px outset;
+        border-color: rgba(${color}, 0.8);
+        /* border-bottom-color: rgba(${color}, 0.1);
+        border-right-color: rgba(${color}, 1);
+        border-top-color: rgba(${color}, 1);
+        border-left-color: rgba(${color}, 0.3); */
+      `;
+    }
+    if (props.type === 'ghost' && props.minoType) {
+      const { color } = MINOINFO[props.minoType];
+
+      return css`
+        background: white;
         border: 4px solid;
-        border-bottom-color: rgba(${props.color}, 0.1);
-        border-right-color: rgba(${props.color}, 1);
-        border-top-color: rgba(${props.color}, 1);
-        border-left-color: rgba(${props.color}, 0.3);
+        border-color: gray;
       `;
     }
-    if (props.type === 'empty') {
-      return css`
-        border: 1px solid;
-        border-color: #555;
-      `;
-    }
-    return '';
+
+    // interpret as 'empty'
+    return css`
+      border: 1px inset;
+      border-color: #bbb;
+    `;
   }};
+  ${(props) => (props.cutoff ? 'border-top: 0px' : '')}
 `;
-export default Cell;
+export default memo(Cell);

@@ -1,13 +1,13 @@
-export type MinoType = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
-type Rotation = 0 | 90 | 180 | 270;
+export type MinoType = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'; // TODO rename
+export type Rotation = 0 | 90 | 180 | 270;
 type CellType = 0 | MinoType;
 
-type Tetromino = {
+type MinoInfo = {
   shape: { [rotation in Rotation]: (0 | 1)[][] };
   color: string;
 };
 
-const TETROMINOS: { [mino in MinoType]: Tetromino } = {
+const MINOINFOS: { [minoType in MinoType]: MinoInfo } = {
   I: {
     shape: {
       0: [
@@ -65,7 +65,7 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   L: {
     shape: {
       0: [
-        [1, 0, 0],
+        [0, 0, 1],
         [1, 1, 1],
         [0, 0, 0],
       ],
@@ -90,9 +90,9 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   O: {
     shape: {
       0: [
-        [1, 0, 0],
-        [1, 1, 1],
-        [0, 0, 0],
+        [0, 1, 1, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0],
       ],
       90: [
         [0, 1, 1],
@@ -115,8 +115,8 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   S: {
     shape: {
       0: [
-        [1, 0, 0],
-        [1, 1, 1],
+        [0, 1, 1],
+        [1, 1, 0],
         [0, 0, 0],
       ],
       90: [
@@ -140,7 +140,7 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   T: {
     shape: {
       0: [
-        [1, 0, 0],
+        [0, 1, 0],
         [1, 1, 1],
         [0, 0, 0],
       ],
@@ -165,8 +165,8 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   Z: {
     shape: {
       0: [
-        [1, 0, 0],
-        [1, 1, 1],
+        [1, 1, 0],
+        [0, 1, 1],
         [0, 0, 0],
       ],
       90: [
@@ -189,11 +189,10 @@ const TETROMINOS: { [mino in MinoType]: Tetromino } = {
   },
 };
 
-export const randomTeromino = (): MinoType => {
-  const tetrominos: MinoType[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
-  const randTetromino =
-    tetrominos[Math.floor(Math.random() * tetrominos.length)];
-  return randTetromino;
+export const randomMino = () => {
+  const minos: MinoType[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+  const randMino = minos[Math.floor(Math.random() * minos.length)];
+  return randMino;
 };
 
-export default TETROMINOS;
+export default MINOINFOS;

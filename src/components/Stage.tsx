@@ -1,20 +1,27 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import Cell from 'components/Cell';
-import { CellData } from 'gameHelper';
+import Cell, { Props as CellProps } from 'components/Cell';
 
-interface Props {
-  stage: CellData[][];
+export interface Props {
+  stage: CellProps[][];
 }
 
-const Stage: FC<Props> = ({ stage }) => (
-  <Wrapper width={stage[0].length} height={stage.length}>
-    {stage.map((row) =>
-      row.map(({ type, x }) => <Cell type="block" mino="T" />)
-    )}
-  </Wrapper>
-);
+const Stage: FC<Props> = ({ stage }) => {
+  const width = stage[0].length;
+  const height = stage.length;
+  return (
+    <Wrapper width={width} height={height}>
+      {stage
+        .reverse()
+        .map((row, y) =>
+          row.map((props, x) => (
+            <Cell {...props} cutoff={y === 0} key={`${x}_${y}`} />
+          ))
+        )}
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.div<{ width: number; height: number }>`
   display: grid;
@@ -22,7 +29,7 @@ const Wrapper = styled.div<{ width: number; height: number }>`
   grid-gap: 1px;
   border: 4px solid #fff;
   width: 100%;
-  background: #333;
+  background: #557;
 `;
 
 export default Stage;

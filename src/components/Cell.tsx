@@ -1,26 +1,39 @@
-import React, { FC, memo } from 'react';
+import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import MINOINFO, { MinoType } from 'tetrominos';
 
-type CellType = 'empty' | 'block' | 'ghost';
 export interface Props {
   type: 'empty' | 'activeMino' | 'fixedBlock' | 'ghost';
   minoType?: MinoType;
   cutoff?: boolean;
 }
 
-// TODO rename
-const Cell: FC<Props> = (props) => {
-  return <Wrapper {...props} />;
+const Cell: FC<Props> = ({ type, minoType, cutoff }) => {
+  return (
+    <OuterBox cutoff={cutoff}>
+      <InnerBox type={type} minoType={minoType} cutoff={cutoff} />
+    </OuterBox>
+  );
 };
 
-const Wrapper = styled.div<Props>`
+type x = Pick<Props, 'cutoff'>;
+
+const OuterBox = styled.div<Pick<Props, 'cutoff'>>`
+  position: relative;
+
   &::before {
     display: block;
-    padding-top: ${(props) => (props.cutoff ? '30%' : '100%')};
+    padding: ${(props) => (props.cutoff ? '20% 0' : '50% 0')};
     content: '';
   }
+`;
 
+const InnerBox = styled.div<Props>`
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
   ${(props) => {
     if (
       (props.type === 'fixedBlock' || props.type === 'activeMino') &&
@@ -28,18 +41,12 @@ const Wrapper = styled.div<Props>`
     ) {
       const { color } = MINOINFO[props.minoType];
       return css`
-        background: rgba(${color}, 0.7);
+        background: rgba(${color}, 0.8);
         border: 6px outset;
         border-color: rgba(${color}, 0.8);
-        /* border-bottom-color: rgba(${color}, 0.1);
-        border-right-color: rgba(${color}, 1);
-        border-top-color: rgba(${color}, 1);
-        border-left-color: rgba(${color}, 0.3); */
       `;
     }
     if (props.type === 'ghost' && props.minoType) {
-      const { color } = MINOINFO[props.minoType];
-
       return css`
         background: white;
         border: 4px solid;
@@ -49,10 +56,8 @@ const Wrapper = styled.div<Props>`
 
     // interpret as 'empty'
     return css`
-      border: 1px inset;
-      border-color: #bbb;
+      border: 1px inset #777;
     `;
   }};
-  ${(props) => (props.cutoff ? 'border-top: 0px' : '')}
 `;
-export default memo(Cell);
+export default Cell;

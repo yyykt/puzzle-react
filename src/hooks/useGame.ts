@@ -10,13 +10,14 @@ import {
   place,
   deleteLines,
 } from 'gameHelper';
-import { randomMino } from 'tetrominos';
+import { randomMino } from 'tetriminos';
 
 const useGame = () => {
   const [mino, setMino] = useState<Mino | null>(null);
   const [field, setField] = useState<Field>(createEmptyFiled());
   const [gameOver, setGameOver] = useState(false);
   const [lineCleared, setLineCleared] = useState(0);
+  const [timer, setTimer] = useState(0);
 
   const resetField = () => setField(createEmptyFiled());
 
@@ -92,6 +93,8 @@ const useGame = () => {
     resetField();
     resetMino();
     setGameOver(false);
+    setLineCleared(0);
+    setTimer(0);
   };
 
   const placeMino = () => {
@@ -116,6 +119,8 @@ const useGame = () => {
     resetMino,
     placeMino,
     hardDropMino,
+    timer,
+    setTimer,
   };
 };
 

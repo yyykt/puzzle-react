@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import MINOINFO, { MinoType } from 'tetrominos';
+import MINOINFO, { MinoType } from 'tetriminos';
 
 export interface Props {
   type: 'empty' | 'activeMino' | 'fixedBlock' | 'ghost';

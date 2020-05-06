@@ -1,5 +1,5 @@
 import { Props as CellProps } from 'components/Cell';
-import MINOINFOS, { MinoType, Rotation } from 'tetrominos';
+import MINOINFOS, { MinoType, Rotation } from 'tetriminos';
 
 export const STAGE_WIDTH = 10;
 export const STAGE_HEIGHT = 21; // including partly visible top line

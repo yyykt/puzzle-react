@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import useGame from 'hooks/useGame';
+import useInterval from 'use-interval';
 
 import { calcVisibleStage } from 'gameHelper';
 import bgImage from 'img/bg.jpg';
@@ -33,6 +34,7 @@ const KeyMap: { [P in Command]: number } = {
 const Tetris: FC = () => {
   // const [dropTime, setDropTime] = useState(null);
   // const [gameOver, setGameOver] = useState(false);
+
   const {
     game,
     startGame,
@@ -40,6 +42,8 @@ const Tetris: FC = () => {
     dropMino,
     rotateMino,
     hardDropMino,
+    timer,
+    setTimer,
   } = useGame();
 
   const { mino, field, gameOver, lineCleared } = game;
@@ -60,6 +64,9 @@ const Tetris: FC = () => {
     }
   };
 
+  useInterval(() => dropMino(), 1000);
+  useInterval(() => setTimer(timer + 1), 1000);
+
   return (
     <div
       tabIndex={0}
@@ -76,20 +83,21 @@ const Tetris: FC = () => {
             <Display text="Game Over" />
           ) : (
             <div>
-              <Display text="Score" />
+              <Display text={`Time: ${timer}`} />
               <Display text={`Lines: ${lineCleared}`} />
-              <Display text="Level" />
+              <Display
+                text={`LPM: ${
+                  timer && ((lineCleared / timer) * 60).toFixed(3)
+                }`}
+              />
             </div>
           )}
           <StartButton callback={startGame} />
-          <ConstComponent />
         </aside>
       </Wrapper>
     </div>
   );
 };
-
-const ConstComponent: FC = () => <div>hogehoge</div>;
 
 const Wrapper = styled.div`
   /* width: 100%; */

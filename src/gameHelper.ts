@@ -16,38 +16,6 @@ export const createEmptyFiled = (): Field =>
     Array.from(Array(STAGE_WIDTH), () => 'empty')
   );
 
-export const calcVisibleStage = (
-  field: Field,
-  mino: Mino | null
-): CellProps[][] => {
-  const stage: CellProps[][] = field
-    .slice(0, STAGE_HEIGHT)
-    .map((row) =>
-      row.map((elem) =>
-        elem === 'empty'
-          ? { type: 'empty' }
-          : { type: 'fixedBlock', minoType: elem }
-      )
-    );
-
-  if (mino) {
-    const { x, y } = mino.pos;
-    const shape = MINOINFOS[mino.minoType].shape[mino.rotation];
-    shape.forEach((row, dy) =>
-      row.forEach((flag, dx) => {
-        if (flag && y - dy < STAGE_HEIGHT) {
-          stage[y - dy][x + dx] = {
-            type: 'activeMino',
-            minoType: mino.minoType,
-          };
-        }
-      })
-    );
-  }
-
-  return stage;
-};
-
 export const isValidPos = (mino: Mino, field: Field) => {
   const shape = MINOINFOS[mino.minoType].shape[mino.rotation];
   return shape.every((row, dy) =>
@@ -171,4 +139,42 @@ export const deleteLines = (field: Field) => {
     count += deleted;
   }
   return { count, updatedField };
+};
+
+export const calcVisibleStage = (
+  field: Field,
+  mino: Mino | null
+): CellProps[][] => {
+  const stage: CellProps[][] = field
+    .slice(0, STAGE_HEIGHT)
+    .map((row) =>
+      row.map((elem) =>
+        elem === 'empty'
+          ? { type: 'empty' }
+          : { type: 'fixedBlock', minoType: elem }
+      )
+    );
+
+  const drawMino = (m: Mino, type: 'activeMino' | 'ghost') => {
+    const { x, y } = m.pos;
+    const shape = MINOINFOS[m.minoType].shape[m.rotation];
+    shape.forEach((row, dy) =>
+      row.forEach((flag, dx) => {
+        if (flag && y - dy < STAGE_HEIGHT) {
+          stage[y - dy][x + dx] = {
+            type,
+            minoType: m.minoType,
+          };
+        }
+      })
+    );
+  };
+
+  if (mino) {
+    const ghost = hardDrop(mino, field);
+    drawMino(ghost, 'ghost');
+    drawMino(mino, 'activeMino');
+  }
+
+  return stage;
 };

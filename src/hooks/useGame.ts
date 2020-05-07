@@ -10,7 +10,7 @@ import {
   place,
   deleteLines,
 } from 'gameHelper';
-import { randomMino } from 'tetriminos';
+import { MinoType } from 'tetriminos';
 import useTimeout from '@rooks/use-timeout';
 import useMinoGenerator from './useMinoGenerator';
 
@@ -20,7 +20,13 @@ const useGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [lineCleared, setLineCleared] = useState(0);
   const [timer, setTimer] = useState(0);
-  const { next, getNext, resetMinoGenerator } = useMinoGenerator();
+  const {
+    next,
+    getNext,
+    resetMinoGenerator,
+    hold,
+    execHold,
+  } = useMinoGenerator();
 
   const resetField = () => setField(createEmptyFiled());
 
@@ -35,8 +41,8 @@ const useGame = () => {
     return false;
   };
 
-  const resetMino = () => {
-    const newMino = createMino(getNext());
+  const resetMino = (minoType: MinoType) => {
+    const newMino = createMino(minoType);
     if (isValidPos(newMino, field)) {
       setMino(newMino);
       return true;
@@ -94,7 +100,7 @@ const useGame = () => {
 
   const TIME_FOR_START = 1000; // ms
   const { start, clear } = useTimeout(() => {
-    resetMino();
+    resetMino(getNext());
     setTimer(0);
   }, TIME_FOR_START);
 
@@ -115,6 +121,18 @@ const useGame = () => {
     setMino(null);
   };
 
+  const holdMino = () => {
+    if (!mino) return;
+    const succeed = execHold(mino.minoType);
+    if (succeed) {
+      if (hold) {
+        resetMino(hold);
+      } else {
+        resetMino(getNext());
+      }
+    }
+  };
+
   const game = {
     mino,
     field,
@@ -133,6 +151,8 @@ const useGame = () => {
     timer,
     setTimer,
     next,
+    hold,
+    holdMino,
   };
 };
 

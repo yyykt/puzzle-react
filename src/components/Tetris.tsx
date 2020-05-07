@@ -6,6 +6,8 @@ import useInterval from 'use-interval';
 import { calcVisibleStage } from 'gameHelper';
 import bgImage from 'img/bg.jpg';
 
+import Next from 'components/Next';
+import Hold from 'components/Hold';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
@@ -45,6 +47,8 @@ const Tetris: FC = () => {
     timer,
     setTimer,
     next,
+    hold,
+    holdMino,
   } = useGame();
 
   const { mino, field, gameOver, lineCleared } = game;
@@ -62,6 +66,8 @@ const Tetris: FC = () => {
       rotateMino('R');
     } else if (keyCode === KeyMap.hardDrop) {
       hardDropMino();
+    } else if (keyCode === KeyMap.hold) {
+      holdMino();
     }
   };
 
@@ -78,7 +84,13 @@ const Tetris: FC = () => {
       }}
     >
       <Wrapper>
+        <aside>
+          <Hold hold={hold} />
+        </aside>
         <Stage stage={calcVisibleStage(field, mino)} />
+        <aside>
+          <Next next={next} />
+        </aside>
         <aside>
           {gameOver ? (
             <Display text="Game Over" />
@@ -91,7 +103,7 @@ const Tetris: FC = () => {
                   timer && ((lineCleared / timer) * 60).toFixed(3)
                 }`}
               />
-              <Display text={`Next: ${next.join()}`} />
+              {/* <Display text={`Next: ${next.join()}`} /> */}
             </div>
           )}
           <StartButton callback={startGame} />
@@ -115,8 +127,8 @@ const Wrapper = styled.div`
   max-width: 600px;
 
   aside {
-    width: 100%;
-    max-width: 200px;
+    width: 30%;
+    max-width: 150px;
     display: block;
     padding: 0 20px;
   }

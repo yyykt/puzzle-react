@@ -1,7 +1,5 @@
 import { useState, useRef } from 'react';
 import { MinoType } from 'tetriminos';
-import { SSL_OP_TLS_BLOCK_PADDING_BUG } from 'constants';
-import { Mino } from 'gameHelper';
 
 const NUM_MINO_SHOWN = 6;
 const initialMinoBag: MinoType[] = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
@@ -11,6 +9,7 @@ const useMinoGenerator = () => {
     Array.from(Array(NUM_MINO_SHOWN), () => null)
   );
   const [hold, setHold] = useState<MinoType | null>(null);
+  const [alreadyHolded, setAlreadyHolded] = useState(false);
   const bag = useRef([...initialMinoBag]);
 
   const popFromBag = () => {
@@ -34,6 +33,7 @@ const useMinoGenerator = () => {
   const getNext = () => {
     const nextCopy = [...next];
     const nextOne = nextCopy.shift();
+    setAlreadyHolded(false);
     if (nextOne) {
       nextCopy.push(popFromBag());
       setNext(nextCopy);
@@ -44,7 +44,14 @@ const useMinoGenerator = () => {
     throw new Error('Invalid call of getNext().');
   };
 
-  return { next, getNext, resetMinoGenerator };
+  const execHold = (mino: MinoType) => {
+    if (alreadyHolded) return false;
+    setHold(mino);
+    setAlreadyHolded(true);
+    return true;
+  };
+
+  return { next, getNext, resetMinoGenerator, hold, execHold };
 };
 
 export default useMinoGenerator;

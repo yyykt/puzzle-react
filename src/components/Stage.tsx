@@ -20,8 +20,7 @@ const Stage: FC<Props> = ({ stage }) => {
             type={type}
             minoType={minoType}
             cutoff={y === 0}
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${x}_${y}`}
+            // no key warning
           />
         ))
       )}

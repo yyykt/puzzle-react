@@ -3,7 +3,13 @@ import styled, { css } from 'styled-components';
 import MINOINFO, { MinoType } from 'tetriminos';
 
 export interface Props {
-  type: 'empty' | 'activeMino' | 'fixedBlock' | 'ghost';
+  type:
+    | 'empty'
+    | 'activeMino'
+    | 'fixedBlock'
+    | 'ghost'
+    | 'previewBg'
+    | 'preview';
   minoType?: MinoType;
   cutoff?: boolean;
 }
@@ -52,6 +58,17 @@ const InnerBox = styled.div<Props>`
         border: 4px solid;
         border-color: gray;
       `;
+    }
+    if (props.type === 'preview' && props.minoType) {
+      const { color } = MINOINFO[props.minoType];
+      return css`
+        background: rgba(${color}, 0.8);
+        border: 2px outset;
+        border-color: rgba(${color}, 0.8);
+      `;
+    }
+    if (props.type === 'previewBg') {
+      return css``;
     }
 
     // interpret as 'empty'

@@ -11,6 +11,8 @@ import {
   deleteLines,
 } from 'gameHelper';
 import { randomMino } from 'tetriminos';
+import useTimeout from '@rooks/use-timeout';
+import useMinoGenerator from './useMinoGenerator';
 
 const useGame = () => {
   const [mino, setMino] = useState<Mino | null>(null);
@@ -18,6 +20,7 @@ const useGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [lineCleared, setLineCleared] = useState(0);
   const [timer, setTimer] = useState(0);
+  const { next, getNext, resetMinoGenerator } = useMinoGenerator();
 
   const resetField = () => setField(createEmptyFiled());
 
@@ -33,7 +36,7 @@ const useGame = () => {
   };
 
   const resetMino = () => {
-    const newMino = createMino(randomMino());
+    const newMino = createMino(getNext());
     if (isValidPos(newMino, field)) {
       setMino(newMino);
       return true;
@@ -68,7 +71,7 @@ const useGame = () => {
 
     // reset mino. needed to copy because of the async behaviour of hooks
     // TODO wait for a while ?
-    const newMino = createMino(randomMino());
+    const newMino = createMino(getNext());
     if (isValidPos(newMino, updatedField)) {
       setMino(newMino);
     } else {
@@ -88,13 +91,21 @@ const useGame = () => {
         })
       : false;
   };
+
+  const TIME_FOR_START = 1000; // ms
+  const { start, clear } = useTimeout(() => {
+    resetMino();
+    setTimer(0);
+  }, TIME_FOR_START);
+
   const startGame = () => {
     // Reset everything
     resetField();
-    resetMino();
+    setMino(null);
     setGameOver(false);
     setLineCleared(0);
-    setTimer(0);
+    resetMinoGenerator();
+    start();
   };
 
   const placeMino = () => {
@@ -121,6 +132,7 @@ const useGame = () => {
     hardDropMino,
     timer,
     setTimer,
+    next,
   };
 };
 

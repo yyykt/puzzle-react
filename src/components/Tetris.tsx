@@ -44,6 +44,7 @@ const Tetris: FC = () => {
     hardDropMino,
     timer,
     setTimer,
+    next,
   } = useGame();
 
   const { mino, field, gameOver, lineCleared } = game;
@@ -90,6 +91,7 @@ const Tetris: FC = () => {
                   timer && ((lineCleared / timer) * 60).toFixed(3)
                 }`}
               />
+              <Display text={`Next: ${next.join()}`} />
             </div>
           )}
           <StartButton callback={startGame} />

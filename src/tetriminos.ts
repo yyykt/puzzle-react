@@ -208,8 +208,8 @@ export const PREVIEW_SHAPES: { [minoType in MinoType]: (0 | 1)[][] } = {
     [1, 1, 0],
   ],
   T: [
-    [1, 1, 1],
     [0, 1, 0],
+    [1, 1, 1],
   ],
   Z: [
     [1, 1, 0],

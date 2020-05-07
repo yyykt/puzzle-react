@@ -15,10 +15,11 @@ const Stage: FC<Props> = ({ stage }) => {
   return (
     <Wrapper width={width} height={height}>
       {stage.reverse().map((row, y) =>
-        row.map(({ type, minoType }, x) => (
+        row.map(({ type, minoType, axis }, x) => (
           <MemorizedCell
             type={type}
             minoType={minoType}
+            axis={axis}
             cutoff={y === 0}
             // no key warning
           />

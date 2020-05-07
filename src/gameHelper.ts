@@ -164,10 +164,23 @@ export const calcVisibleStage = (
           stage[y - dy][x + dx] = {
             type,
             minoType: m.minoType,
+            axis: (() => {
+              if (dx === 1 && dy === 1 && type === 'activeMino') {
+                if (m.minoType !== 'I' && m.minoType !== 'O') return 'center';
+              }
+              return undefined;
+            })(),
           };
         }
       })
     );
+    if (m.minoType === 'I' && type === 'activeMino') {
+      if (m.rotation === 1 || m.rotation === 2) {
+        if (x + 1 >= 0 && x + 1 < STAGE_WIDTH && y - 1 >= 0)
+          stage[y - 1][x + 1].axis = 'lowerRight';
+      } else if (x + 2 >= 0 && x + 2 < STAGE_WIDTH && y - 2 >= 0)
+        stage[y - 2][x + 2].axis = 'upperLeft';
+    }
   };
 
   if (mino) {

@@ -1,6 +1,5 @@
-export type MinoType = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z'; // TODO rename
+export type MinoType = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
 export type Rotation = 0 | 1 | 2 | 3;
-type CellType = 0 | MinoType;
 
 type MinoInfo = {
   shape: { [rotation in Rotation]: (0 | 1)[][] };

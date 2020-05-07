@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import MINOINFO, { MinoType } from 'tetriminos';
+import Marker from 'components/Marker';
 
 export interface Props {
   type:
@@ -12,12 +13,15 @@ export interface Props {
     | 'preview';
   minoType?: MinoType;
   cutoff?: boolean;
+  axis?: 'center' | 'lowerRight' | 'upperLeft';
 }
 
-const Cell: FC<Props> = ({ type, minoType, cutoff }) => {
+const Cell: FC<Props> = ({ type, minoType, cutoff, axis }) => {
   return (
     <OuterBox cutoff={cutoff}>
-      <InnerBox type={type} minoType={minoType} cutoff={cutoff} />
+      <InnerBox type={type} minoType={minoType} cutoff={cutoff}>
+        {axis ? <Marker pos={axis} /> : <div />}
+      </InnerBox>
     </OuterBox>
   );
 };
